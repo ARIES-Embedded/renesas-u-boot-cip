@@ -1,0 +1,15 @@
+if TARGET_MSRZG2UL
+
+config SYS_SOC
+	default "rmobile"
+
+config SYS_BOARD
+	default "msrzg2ul"
+
+config SYS_VENDOR
+	default "aries"
+
+config SYS_CONFIG_NAME
+	default "msrzg2ul"
+
+endif

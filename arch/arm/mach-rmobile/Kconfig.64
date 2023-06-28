@@ -222,6 +222,11 @@ config TARGET_SMARC_RZG2UL
 	help
           Support for Renesas RZ/G2UL Dev Platform
 
+config TARGET_MSRZG2UL
+	bool "ARIES MSRZG2UL OSM"
+	help
+          Support for ARIES MSRZG2UL OSM
+
 endchoice
 
 config SYS_SOC
@@ -241,6 +246,7 @@ source "board/renesas/rzg2l-dev/Kconfig"
 source "board/renesas/rzv2l-dev/Kconfig"
 source "board/renesas/rzg2lc-dev/Kconfig"
 source "board/renesas/rzg2ul-dev/Kconfig"
+source "board/aries/msrzg2ul/Kconfig"
 
 config MULTI_DTB_FIT_UNCOMPRESS_SZ
 	default 0x80000 if TARGET_HIHOPE_RZG2
