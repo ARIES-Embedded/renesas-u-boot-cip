@@ -111,12 +111,12 @@ void s_init(void)
 	/* TODO: Change the voltage setting according to the SW1-3 setting	*/
 	/********************************************************************/
 	/* can go in board_eht_init() once enabled */
-	*(volatile u32 *)(ETH_CH0) = (*(volatile u32 *)(ETH_CH0) & 0xFFFFFFFC) | ETH_PVDD_3300;
+	*(volatile u32 *)(ETH_CH0) = (*(volatile u32 *)(ETH_CH0) & 0xFFFFFFFC) | ETH_PVDD_1800;
 	*(volatile u32 *)(ETH_CH1) = (*(volatile u32 *)(ETH_CH1) & 0xFFFFFFFC) | ETH_PVDD_1800;
 	/* Enable RGMII for both ETH{0,1} */
 	*(volatile u32 *)(ETH_MII_RGMII) = (*(volatile u32 *)(ETH_MII_RGMII) & 0xFFFFFFFC);
 	/* ETH CLK */
-	*(volatile u32 *)(CPG_RESET_ETH) = 0x30002;
+	*(volatile u32 *)(CPG_RESET_ETH) = 0x30003;
 #elif CONFIG_TARGET_RZG2UL_TYPE2_DEV
 	/* can go in board_eht_init() once enabled */
 	*(volatile u32 *)(ETH_CH0) = (*(volatile u32 *)(ETH_CH0) & 0xFFFFFFFC) | ETH_PVDD_2500;
@@ -198,7 +198,7 @@ int board_early_init_f(void)
 
 int board_init(void)
 {
-#if CONFIG_TARGET_SMARC_RZG2UL
+#if 0// CONFIG_TARGET_SMARC_RZG2UL
 	struct udevice *dev;
 	struct udevice *bus;
 	const u8 pmic_bus = 0;
