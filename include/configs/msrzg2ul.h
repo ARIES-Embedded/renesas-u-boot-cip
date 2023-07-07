@@ -77,12 +77,7 @@
 	"blfile=bl2_bp-msrzg2ul.bin\0" \
 	"fipfile=fip-msrzg2ul.bin\0" \
 	"update=sf probe && sf protect unlock 0 0x1e0000; sf erase 0 +0x1e0000 && " \
-	"tftpboot ${serverip}:${blfile} && sf write ${loadaddr} 0 ${filesize} && " \
-	"tftpboot ${serverip}:${fipfile} && sf write ${loadaddr} 0x1d200 ${filesize}\0" \
-	"calc_emsz=setexpr _emsz ${filesize} / 200; setexpr emsz ${_emsz} + 1\0" \
-	"emmc_update=mmc bootbus 0 2 0 0 && mmc partconf 0 0 1 1 && " \
-	"tftpboot ${serverip}:${blfile} && run calc_emsz && mmc write ${loadaddr} 1 ${emsz} && " \
-	"tftpboot ${serverip}:${fipfile} && run calc_emsz && mmc write ${loadaddr} 0x100 ${emsz}\0"
+	"tftpboot ${serverip}:${fipfile} && sf write ${loadaddr} 0x11e00 ${filesize}\0"
 
 #define CONFIG_BOOTCOMMAND	"env default -a;run bootcmd_check;run bootimage"
 
