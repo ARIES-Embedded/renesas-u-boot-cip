@@ -143,7 +143,7 @@
 			clock-names = "fck";
 			resets = <&cpg R9A07G043U_CLK_SCIF0>;
 			power-domains = <&cpg>;
-			status = "disable";
+			status = "disabled";
 		};
 
 		scif1: serial@1004bc00 {
@@ -160,7 +160,7 @@
 			clock-names = "fck";
 			resets = <&cpg R9A07G043U_CLK_SCIF1>;
 			power-domains = <&cpg>;
-			status = "disable";
+			status = "disabled";
 		};
 
 		scif2: serial@1004c000 {
@@ -177,7 +177,7 @@
 			clock-names = "fck";
 			resets = <&cpg R9A07G043U_CLK_SCIF2>;
 			power-domains = <&cpg>;
-			status = "disable";
+			status = "disabled";
 		};
 
 		sdhi0: sd@11c00000 {
