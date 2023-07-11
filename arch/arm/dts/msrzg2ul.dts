@@ -134,6 +134,10 @@
 	status = "okay";
 };
 
+&i2c1 {
+	status = "okay";
+};
+
 &spibsc {
         num-cs = <1>;
         status = "okay";
