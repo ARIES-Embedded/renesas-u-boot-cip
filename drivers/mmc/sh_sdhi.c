@@ -32,6 +32,7 @@
 #include <asm/global_data.h>
 #include <clk.h>
 #include <fdtdec.h>
+#include <asm/gpio.h>
 
 #define DRIVER_NAME "sh-sdhi"
 
@@ -44,6 +45,7 @@ struct sh_sdhi_host {
 	unsigned char sd_error;
 	unsigned char detect_waiting;
 	unsigned char app_cmd;
+	struct gpio_desc pwr_gpio;
 };
 
 static inline void sh_sdhi_writeq(struct sh_sdhi_host *host, int reg, u64 val)
@@ -849,6 +851,17 @@ static int sh_sdhi_dm_probe(struct udevice *dev)
 	const u32 quirks = dev_get_driver_data(dev);
 	fdt_addr_t base;
 	int ret;
+
+	gpio_request_by_name_nodev(dev_ofnode(dev), "pwr-gpios", 0,
+				   &host->pwr_gpio, GPIOD_IS_OUT);
+	if (dm_gpio_is_valid(&host->pwr_gpio))
+	{
+		ret = dm_gpio_set_value(&host->pwr_gpio, 1);
+		if (ret) {
+			debug("error setting pwr gpio, ret=%d\n", ret);
+			return ret;
+		}
+	}
 
 	base = dev_read_addr(dev);
 	if (base == FDT_ADDR_T_NONE)
