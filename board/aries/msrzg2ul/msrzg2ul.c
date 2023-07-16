@@ -22,6 +22,7 @@
 #include <mmc.h>
 #include <wdt.h>
 #include <rzg2l_wdt.h>
+#include "../../renesas/rzf-dev/rzf-dev_spi_multi.h"
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -154,6 +155,8 @@ static void board_usb_init(void)
 int board_early_init_f(void)
 {
 
+	spi_multi_setup(SPI_MULTI_ADDR_WIDES_24, SPI_MULTI_DQ_WIDES_1_4_4,
+			SPI_MULTI_DUMMY_10CYCLE);
 	return 0;
 }
 
