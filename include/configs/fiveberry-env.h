@@ -38,9 +38,9 @@
 	"ramdisk_addr_r=0x61000000\0" \
 	"ramdisk_file=boot/fiveberry-image-base-msrzg2ul.cpio.gz\0" \
 	"sd_bootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk1p1\0" \
-	"sd_boot=ext4load mmc 0:1 ${kernel_addr_r} ${image_file} && " \
+	"sd_boot=ext4load mmc 1:1 ${kernel_addr_r} ${image_file} && " \
 		"setenv kernel_comp_size ${filesize} && " \
-		"ext4load mmc 0:1 ${fdt_addr_r} ${fdt_file} && " \
+		"ext4load mmc 1:1 ${fdt_addr_r} ${fdt_file} && " \
 		"run sd_bootargs && booti ${kernel_addr_r} - ${fdt_addr_r}\0" \
 	"serverip=192.168.1.1\0" \
 	"spi_bootargs=setenv bootargs earlycon\0" \
