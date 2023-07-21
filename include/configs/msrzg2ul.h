@@ -58,28 +58,8 @@
 /* The HF/QSPI layout permits up to 1 MiB large bootloader blob */
 #define CONFIG_BOARD_SIZE_LIMIT		1048576
 
-/* ENV setting */
-
-#define CONFIG_EXTRA_ENV_SETTINGS \
-	"usb_pgood_delay=2000\0" \
-	"bootm_size=0x10000000 \0" \
-	"prodsdbootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk1p1 \0" \
-	"prodemmcbootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk0p1 \0" \
-	"bootimage=unzip 0x4A080000 0x48080000; booti 0x48080000 - 0x48000000 \0" \
-	"emmcload=ext4load mmc 0:1 0x4A080000 boot/Image.gz;ext4load mmc 0:1 0x48000000 boot/r9a07g043u11-smarc.dts.dtb;run prodemmcbootargs \0" \
-	"sd1load=ext4load mmc 1:1 0x4A080000 boot/Image.gz;ext4load mmc 1:1 0x48000000 boot/r9a07g043u11-smarc.dts.dtb;run prodsdbootargs \0" \
-	"bootcmd_check=if mmc dev 1; then run sd1load; else run emmcload; fi \0" \
-	"ethaddr=d6:8f:16:4f:c3:c7\0" \
-	"eth1addr=32:eb:f5:29:04:30\0" \
-	"ipaddr=192.168.1.2\0" \
-	"ethact=eth0\0" \
-	"serverip=192.168.1.1\0" \
-	"blfile=bl2_bp-msrzg2ul.bin\0" \
-	"fipfile=fip-msrzg2ul.bin\0" \
-	"update=sf probe && sf protect unlock 0 0x1e0000; sf erase 0 +0x1e0000 && " \
-	"tftpboot ${serverip}:${fipfile} && sf write ${loadaddr} 0x11e00 ${filesize}\0"
-
-#define CONFIG_BOOTCOMMAND	"env default -a;run bootcmd_check;run bootimage"
+/* ENV settings */
+#include "fiveberry-env.h"
 
 /* For board */
 /* Ethernet RAVB */
