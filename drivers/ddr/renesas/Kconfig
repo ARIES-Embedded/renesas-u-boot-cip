@@ -1,4 +1,4 @@
-if TARGET_RZF_DEV || TARGET_SMARC_RZF
+if TARGET_RZF_DEV || TARGET_SMARC_RZF || TARGET_MSRZFIVE
 
 choice
 	prompt "DDR type select"
@@ -27,6 +27,9 @@ config RZF_DDR_SWIZZLE_T3BCUL
 
 config RZF_DDR_SWIZZLE_T3CL
 	bool "param_swizzle_T3cl"
+
+config RZF_DDR_SWIZZLE_MSRZ
+	bool "param_swizzle_MSRZ"
 endchoice
 
 config RZF_DDR_PLL4

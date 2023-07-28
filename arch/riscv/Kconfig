@@ -35,6 +35,9 @@ config TARGET_RZF_DEV
 config TARGET_SMARC_RZF
         bool "Support Renesas RZ/Five"
 
+config TARGET_MSRZFIVE
+        bool "Support ARIES MSRZ/Five OSM"
+
 endchoice
 
 config SYS_ICACHE_OFF
@@ -72,6 +75,7 @@ source "board/sifive/unmatched/Kconfig"
 source "board/openpiton/riscv64/Kconfig"
 source "board/sipeed/maix/Kconfig"
 source "board/renesas/rzf-dev/Kconfig"
+source "board/aries/msrzfive/Kconfig"
 
 # platform-specific options below
 source "arch/riscv/cpu/ax25/Kconfig"

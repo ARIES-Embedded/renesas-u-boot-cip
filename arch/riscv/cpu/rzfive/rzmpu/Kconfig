@@ -1,4 +1,4 @@
-if TARGET_RZF_DEV || TARGET_SMARC_RZF
+if TARGET_RZF_DEV || TARGET_SMARC_RZF || TARGET_MSRZFIVE
 
 config ARCH_RZMPU
 	bool "RZFMPU architecture"
@@ -30,6 +30,9 @@ config RZF_DDR_C_011_D4_01_1
 
 config RZF_DDR_C_011_D4_01_2
 	bool "param_mc_C-011_D4-01-2"
+
+config RZF_DDR_MSRZ
+	bool "param_mc_MSRZ"
 endchoice
 
 endif

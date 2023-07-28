@@ -48,6 +48,7 @@ obj-$(CONFIG_ARCH_IMX8M) += ddr/imx/imx8m/
 obj-$(CONFIG_IMX8ULP_DRAM) += ddr/imx/imx8ulp/
 obj-$(CONFIG_TARGET_RZF_DEV) += ddr/renesas/
 obj-$(CONFIG_TARGET_SMARC_RZF) += ddr/renesas/
+obj-$(CONFIG_TARGET_MSRZFIVE) += ddr/renesas/
 obj-$(CONFIG_SPL_POWER) += power/ power/pmic/
 obj-$(CONFIG_SPL_POWER) += power/regulator/
 obj-$(CONFIG_SPL_POWER_DOMAIN) += power/domain/
