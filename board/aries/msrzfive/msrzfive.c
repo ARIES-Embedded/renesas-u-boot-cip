@@ -219,11 +219,7 @@ int spl_board_init_f(void)
 	boot_dev = *((uint16_t *)RZF_BOOTINFO_BASE) & MASK_BOOTM_DEVICE;
 	if (boot_dev == BOOT_MODE_SPI_1_8 ||
 		boot_dev == BOOT_MODE_SPI_3_3) {
-#if CONFIG_TARGET_SMARC_RZF
 		spi_multi_setup(SPI_MULTI_ADDR_WIDES_24, SPI_MULTI_DQ_WIDES_1_1_1, SPI_MULTI_DUMMY_8CYCLE);
-#else
-		spi_multi_setup(SPI_MULTI_ADDR_WIDES_24, SPI_MULTI_DQ_WIDES_1_4_4, SPI_MULTI_DUMMY_10CYCLE);
-#endif
 	}
 
 	return 0;
