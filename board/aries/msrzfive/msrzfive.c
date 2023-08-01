@@ -254,7 +254,7 @@ void board_init_f(ulong dummy)
 
 void reset_cpu(void)
 {
-#ifdef CONFIG_RENESAS_RZG2LWDT
+#if defined(CONFIG_RENESAS_RZG2LWDT) && !defined(CONFIG_SPL_BUILD)
 	struct udevice *wdt_dev;
 	if (uclass_get_device(UCLASS_WDT, WDT_INDEX, &wdt_dev) < 0) {
 		printf("failed to get wdt device. cannot reset\n");
