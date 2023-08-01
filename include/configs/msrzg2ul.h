@@ -58,6 +58,11 @@
 /* The HF/QSPI layout permits up to 1 MiB large bootloader blob */
 #define CONFIG_BOARD_SIZE_LIMIT		1048576
 
+#define FIVEBERRY_FIRST_LOADER "boot/spl-msrzg2ul.bin"
+#define FIVEBERRY_SECOND_LOADER "boot/fit-msrzg2ul.bin"
+#define FIVEBERRY_DEFAULT_DEVICE_TREE "boot/msrzg2ul.dtb"
+#define FIVEBERRY_SECOND_LOADER_OFFSET	0x1d200
+
 /* ENV settings */
 #include "fiveberry-env.h"
 

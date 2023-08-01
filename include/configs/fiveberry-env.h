@@ -1,10 +1,23 @@
 #ifndef __FIVEBERRY_ENV_H
 #define __FIVEBERRY_ENV_H
 
-#define CONFIG_EXTRA_ENV_SETTINGS \
-	"bl2_file=boot/bl2_bp-msrzg2ul.bin\0" \
-	"bootargs=rw rootwait earlycon\0" \
-	"bootm_size=0x10000000\0" \
+#include <linux/stringify.h>
+
+#ifndef FIVEBERRY_FIRST_LOADER
+#error "FIVEBERRY_FIRST_LOADER is not defined"
+#endif
+#ifndef FIVEBERRY_SECOND_LOADER
+#error "FIVEBERRY_SECOND_LOADER is not defined"
+#endif
+#ifndef FIVEBERRY_SECOND_LOADER_OFFSET
+#error "FIVEBERRY_SECOND_LOADER_OFFSET is not defined"
+#endif
+#ifndef FIVEBERRY_DEFAULT_DEVICE_TREE
+#error "FIVEBERRY_DEFAULT_DEVICE_TREE is not defined"
+#endif
+
+#ifdef CONFIG_SUPPORT_EMMC_BOOT
+#define FIVEBERRY_EMMC_ENV_SETTINGS \
 	"divup_filesize=setexpr filesize ${filesize} / 200 && " \
 		"setexpr filesize ${filesize} + 1\0" \
 	"emmc_bootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk0p1\0" \
@@ -17,12 +30,21 @@
 		"run divup_filesize;mmc write ${fileaddr} 1 ${filesize};" \
 		"tftpboot ${serverip}:${fipfile};" \
 		"run divup_filesize;mmc write ${fileaddr} 0x100 ${filesize}\0" \
-	"emmc_update=run emmc_bl2_update emmc_fip_update\0" \
+	"emmc_update=run emmc_bl2_update emmc_fip_update\0"
+#else
+#define FIVEBERRY_EMMC_ENV_SETTINGS
+#endif
+
+#define CONFIG_EXTRA_ENV_SETTINGS \
+	"bl2_file=" FIVEBERRY_FIRST_LOADER "\0" \
+	"bootargs=rw rootwait earlycon\0" \
+	"bootm_size=0x10000000\0" \
+	FIVEBERRY_EMMC_ENV_SETTINGS \
 	"eth1addr=32:eb:f5:29:04:30\0" \
 	"ethaddr=d6:8f:16:4f:c3:c7\0" \
 	"fdt_addr_r=0x60000000\0" \
-	"fdt_file=boot/msrzg2ul.dtb\0" \
-	"fip_file=boot/fip-msrzg2ul.bin\0" \
+	"fdt_file=" FIVEBERRY_DEFAULT_DEVICE_TREE "\0" \
+	"fip_file=" FIVEBERRY_SECOND_LOADER "\0" \
 	"image_file=boot/Image.gz\0" \
 	"ipaddr=192.168.1.2\0" \
 	"kernel_addr_r=0x48000000\0" \
@@ -50,7 +72,8 @@
 		"booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}\0" \
 	"spi_update=sf probe;sf protect unlock 0 0x100000;sf erase 0 +0x100000;" \
 		"tftpboot ${serverip}:${bl2_file} && sf write ${fileaddr} 0 ${filesize};" \
-		"tftpboot ${serverip}:${fip_file} && sf write ${fileaddr} 0x1d200 ${filesize}\0"
+		"tftpboot ${serverip}:${fip_file} && sf write ${fileaddr} " \
+		__stringify(FIVEBERRY_SECOND_LOADER_OFFSET) " ${filesize}\0"
 
 #define CONFIG_BOOTCOMMAND	"run sd_boot || run spi_boot"
 

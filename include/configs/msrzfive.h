@@ -91,18 +91,12 @@
 /* The HF/QSPI layout permits up to 1 MiB large bootloader blob */
 #define CONFIG_BOARD_SIZE_LIMIT		1048576
 
-/* ENV setting */
-#define CONFIG_EXTRA_ENV_SETTINGS	\
-	"bootm_size=0x10000000\0" \
-		"bootargs root =" \
-			"/dev/mmcblk0p2" \
-		"bootcmd_mmc=" \
-			"setenv bootargs root=/dev/mmcblk0p2 rw rootwait;" \
-			"ext4load mmc 1:1 0x48080000 Image; " \
-			"ext4load mmc 1:1 0x48000000 "CONFIG_DEFAULT_FDT_FILE"; " \
-			"booti 0x48080000 - 0x48000000" \
-		"bootcmd=" \
-			"run bootcmd_mmc"
+#define FIVEBERRY_FIRST_LOADER "boot/spl-msrzfive.bin"
+#define FIVEBERRY_SECOND_LOADER "boot/fit-msrzfive.bin"
+#define FIVEBERRY_DEFAULT_DEVICE_TREE "boot/msrzfive.dtb"
+#define FIVEBERRY_SECOND_LOADER_OFFSET	0x20000
+
+#include "fiveberry-env.h"
 
 /* For board */
 /* Ethernet RAVB */
