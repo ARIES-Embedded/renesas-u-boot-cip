@@ -106,45 +106,11 @@ int board_early_init_f(void)
 
 int board_init(void)
 {
-#if CONFIG_TARGET_SMARC_RZF
-	struct udevice *dev;
-	struct udevice *bus;
-	const u8 pmic_bus = 0;
-	const u8 pmic_addr = 0x58;
-	int i = 0;
-	u8 data;
-	int ret;
+	printf("SW_ET0_EN: ON\n");
+	*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch0_1_8;
+	printf("SW_ET0_EN: OFF\n");
+	*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch1_1_8;
 
-	ret = uclass_get_device_by_seq(UCLASS_I2C, pmic_bus, &bus);
-	if (ret)
-		hang();
-
-	ret = i2c_get_chip(bus, pmic_addr, 1, &dev);
-	if (ret)
-		hang();
-
-	/*
-	 * Disabling L1 data cache causes dm_i2c_read()
-	 * to fail occasionally so just retry before
-	 * giving up.
-	 */
-re_read:
-	ret = dm_i2c_read(dev, 0x2, &data, 1);
-	if (ret) {
-		if (i++ < 20)
-			goto re_read;
-		hang();
-	}
-
-	if ((data & 0x08) == 0) {
-		printf("SW_ET0_EN: ON\n");
-		*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch0_1_8;
-	} else {
-		printf("SW_ET0_EN: OFF\n");
-		*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch0_3_3;
-	}
-	udelay(10);
-#endif
 	return 0;
 }
 
