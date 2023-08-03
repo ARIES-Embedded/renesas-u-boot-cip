@@ -66,7 +66,7 @@
 		"run sd_bootargs && booti ${kernel_addr_r} - ${fdt_addr_r}\0" \
 	"serverip=192.168.1.1\0" \
 	"spi_bootargs=setenv bootargs earlycon\0" \
-	"spi_boot=sf_probe;sf read ${kernel_addr_r} 0x140000 ${kernel_comp_size};" \
+	"spi_boot=sf probe;sf read ${kernel_addr_r} 0x140000 ${kernel_comp_size};" \
 		"sf read ${ramdisk_addr_r} 0x740000 ${ramdisk_size};" \
 		"sf read ${fdt_addr_r} 0x120000 ${fdt_size};run spi_bootargs;" \
 		"booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}\0" \
