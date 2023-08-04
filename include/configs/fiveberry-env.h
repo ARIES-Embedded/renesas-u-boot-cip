@@ -45,7 +45,7 @@
 	"fdt_addr_r=0x60000000\0" \
 	"fdt_file=" FIVEBERRY_DEFAULT_DEVICE_TREE "\0" \
 	"fip_file=" FIVEBERRY_SECOND_LOADER "\0" \
-	"image_file=boot/Image.gz\0" \
+	"image_file=" FIVEBERRY_DEFAULT_IMAGE "\0" \
 	"ipaddr=192.168.1.2\0" \
 	"kernel_addr_r=0x48000000\0" \
 	"kernel_comp_addr_r=0x4c000000\0" \
@@ -58,7 +58,7 @@
 		"run net_args && " \
 		"booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}\0" \
 	"ramdisk_addr_r=0x61000000\0" \
-	"ramdisk_file=boot/fiveberry-image-base-msrzg2ul.cpio.gz\0" \
+	"ramdisk_file=" FIVEBERRY_DEFAULT_RAMDISK "\0" \
 	"sd_bootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk1p1\0" \
 	"sd_boot=ext4load mmc 1:1 ${kernel_addr_r} ${image_file} && " \
 		"setenv kernel_comp_size ${filesize} && " \

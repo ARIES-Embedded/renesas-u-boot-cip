@@ -93,7 +93,9 @@
 
 #define FIVEBERRY_FIRST_LOADER "boot/spl-msrzfive.bin"
 #define FIVEBERRY_SECOND_LOADER "boot/fit-msrzfive.bin"
+#define FIVEBERRY_DEFAULT_IMAGE "boot/Image.gz-msrzfive.bin"
 #define FIVEBERRY_DEFAULT_DEVICE_TREE "boot/msrzfive.dtb"
+#define FIVEBERRY_DEFAULT_RAMDISK "boot/fiveberry-image-base-msrzfive.bin"
 #define FIVEBERRY_SECOND_LOADER_OFFSET	0x20000
 
 #include "fiveberry-env.h"
