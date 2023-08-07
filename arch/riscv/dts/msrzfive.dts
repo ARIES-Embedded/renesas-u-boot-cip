@@ -33,6 +33,12 @@
 		reg = <0 0x48000000 0 0x38000000>;
 	};
 
+	usb0_vbus0_otg: regulator-vbus0-usb2 {
+		compatible = "regulator-fixed";
+		regulator-name = "USB20_OTG_VBUS";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+	};
 };
 
 &pinctrl {
@@ -80,6 +86,17 @@
 	};
 	mmc_pins: mmc0 {
 		pinmux = <RZG2L_PINMUX(11, 2, 0)>;
+	};
+	usb0_pins: usb0 {
+		pinmux =
+			<RZG2L_PINMUX(5, 0, 1)>, /* VBUS_EN */
+			<RZG2L_PINMUX(5, 2, 1)>, /* OVC */
+			<RZG2L_PINMUX(5, 3, 1)>; /* OTG_ID */
+	};
+	usb1_pins: usb1 {
+		pinmux =
+			<RZG2L_PINMUX(6, 0, 1)>, /* VBUS_EN */
+			<RZG2L_PINMUX(6, 1, 1)>; /* OVC */
 	};
 };
 
@@ -156,6 +173,19 @@
 
 &ehci1 {
 	status = "okay";
+};
+
+&usb2_phy0 {
+        pinctrl-0 = <&usb0_pins>;
+        pinctrl-names = "default";
+        vbus-supply = <&usb0_vbus0_otg>;
+        status = "okay";
+};
+
+&usb2_phy1 {
+        pinctrl-0 = <&usb1_pins>;
+        pinctrl-names = "default";
+        status = "okay";
 };
 
 &wdt0 {

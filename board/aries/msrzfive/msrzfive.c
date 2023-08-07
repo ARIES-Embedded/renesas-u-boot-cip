@@ -39,12 +39,14 @@ extern phys_addr_t prior_stage_fdt_address;
 /*
  * Miscellaneous platform dependent initializations
  */
+#ifdef CONFIG_V5L2_CACHE
 static void v5l2_init(void)
 {
 	struct udevice *dev;
 
 	uclass_get_device(UCLASS_CACHE, 0, &dev);
 }
+#endif
 
 #ifdef CONFIG_BOARD_EARLY_INIT_F
 int board_early_init_f(void)
@@ -52,65 +54,29 @@ int board_early_init_f(void)
 #ifdef CONFIG_V5L2_CACHE
 	v5l2_init();
 #endif
-#if CONFIG_TARGET_SMARC_RZF
-	/* SD1 power control : P0_3 = 1 P6_1 = 1        */
-	*(volatile u8 *)(PFC_PMC10) &= 0xF7;    /* Port func mode 0b00  */
-	*(volatile u8 *)(PFC_PMC16) &= 0xFD;    /* Port func mode 0b00  */
-	*(volatile u16 *)(PFC_PM10) = (*(volatile u16 *)(PFC_PM10) & 0xFF3F) | 0x0080; /* Port output mode 0b10 */
-	*(volatile u16 *)(PFC_PM16) = (*(volatile u16 *)(PFC_PM16) & 0xFFF3) | 0x0008; /* Port output mode 0b10 */
-	*(volatile u8 *)(PFC_P10) = (*(volatile u8 *)(PFC_P10) & 0xF7) | 0x08; /* P0_3  output 1        */
-	*(volatile u8 *)(PFC_P16) = (*(volatile u8 *)(PFC_P16) & 0xFD) | 0x02; /* P6_1  output 1        */
+	/* can go in board_eth_init() once enabled */
+	*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch0_1_8;
+	*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch1_1_8;
 
-	/* can go in board_eht_init() once enabled */
-	*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch0_3_3;
-	*(volatile u32 *)(PFC_ETH_ch1) = (*(volatile u32 *)(PFC_ETH_ch1) & 0xFFFFFFFC) | ETH_ch1_1_8;
 	/* Enable RGMII for both ETH{0,1} */
 	*(volatile u32 *)(PFC_ETH_MII) = (*(volatile u32 *)(PFC_ETH_MII) & 0xFFFFFFFC);
-	/* ETH CLK */
-	*(volatile u32 *)(CPG_RST_ETH) = 0x30002;
-#else
-	/* SD0 power control: P5_4=1,P18_4 = 1; */
-	*(volatile u8 *)(PFC_PMC15) &= 0xEF;
-	*(volatile u8 *)(PFC_PMC22) &= 0xEF; /* Port func mode 0b0 */
-	*(volatile u16 *)(PFC_PM15) = (*(volatile u16 *)(PFC_PM15) & 0xFCFF) | 0x200;
-	*(volatile u16 *)(PFC_PM22) = (*(volatile u16 *)(PFC_PM22) & 0xFCFF) | 0x200; /* Port output mode 0b10 */
-	*(volatile u8 *)(PFC_P15) = (*(volatile u8 *)(PFC_P15) & 0xEF) | 0x10;
-	*(volatile u8 *)(PFC_P22) = (*(volatile u8 *)(PFC_P22) & 0xEF) | 0x10;  /* Port 18[2:1] output value 0b1*/
 
-	/* SD1 power control: P6_2=1,P18_5 = 1; */
-	*(volatile u8 *)(PFC_PMC16) &= 0xFB; /* Port func mode 0b0 */
-	*(volatile u8 *)(PFC_PMC22) &= 0xDF; /* Port func mode 0b0 */
-	*(volatile u16 *)(PFC_PM16) = (*(volatile u16 *)(PFC_PM16) & 0xFFCF) | 0x20; /* Port output mode 0b10 */
-	*(volatile u16 *)(PFC_PM22) = (*(volatile u16 *)(PFC_PM22) & 0xF3FF) | 0x800; /* Port output mode 0b10 */
-	*(volatile u8 *)(PFC_P16) = (*(volatile u8 *)(PFC_P16) & 0xFB) | 0x04;  /* Port 6[2:1] output value 0b1*/
-	*(volatile u8 *)(PFC_P22) = (*(volatile u8 *)(PFC_P22) & 0xDF) | 0x20;  /* Port 18[2:1] output value 0b1*/
-
-	/* can go in board_eht_init() once enabled */
-	*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch0_3_3;
-	*(volatile u32 *)(PFC_ETH_ch1) = (*(volatile u32 *)(PFC_ETH_ch1) & 0xFFFFFFFC) | ETH_ch1_3_3;
-	/* Enable RGMII for both ETH{0,1} */
-	*(volatile u32 *)(PFC_ETH_MII) = (*(volatile u32 *)(PFC_ETH_MII) & 0xFFFFFFFC);
 	/* ETH CLK */
 	*(volatile u32 *)(CPG_RST_ETH) = 0x30003;
-#endif
-	/* SD CLK */
-	*(volatile u32 *)(CPG_PL2SDHI_DSEL) = 0x00110011;
-	while (*(volatile u32 *)(CPG_CLKSTATUS) != 0)
-		;
+
+	/* I2C CLK */
+	*(volatile u32 *)(CPG_RST_I2C) = 0xF000F;
+
+	/* I2C pin non GPIO enable */
+	*(volatile u32 *)(PFC_IEN0E) = 0x01010101;
 
 	*(volatile u32 *)(RPC_CMNCR) = 0x01FFF300;
-
 	return 0;
 }
 #endif
 
 int board_init(void)
 {
-	printf("SW_ET0_EN: ON\n");
-	*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch0_1_8;
-	printf("SW_ET0_EN: OFF\n");
-	*(volatile u32 *)(PFC_ETH_ch0) = (*(volatile u32 *)(PFC_ETH_ch0) & 0xFFFFFFFC) | ETH_ch1_1_8;
-
 	return 0;
 }
 
