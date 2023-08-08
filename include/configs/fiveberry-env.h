@@ -44,7 +44,7 @@
 	FIVEBERRY_EMMC_ENV_SETTINGS \
 	"eth1addr=32:eb:f5:29:04:30\0" \
 	"ethaddr=d6:8f:16:4f:c3:c7\0" \
-	"fdt_addr_r=0x60000000\0" \
+	"fdt_addr_r=0x60100000\0" \
 	"fdt_file=" FIVEBERRY_DEFAULT_DEVICE_TREE "\0" \
 	"fdt_size=20000\0" \
 	"fip_file=" FIVEBERRY_SECOND_LOADER "\0" \
@@ -67,7 +67,7 @@
 	"sd_bootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk1p1\0" \
 	"sd_boot=ext4load " FIVEBERRY_SD_DEV " ${kernel_addr_r} ${image_file} && " \
 		"setenv kernel_comp_size ${filesize} && " \
-		"ext4load mmc " ":1 ${fdt_addr_r} ${fdt_file} && " \
+		"ext4load mmc " FIVEBERRY_SD_DEV " ${fdt_addr_r} ${fdt_file} && " \
 		"run sd_bootargs && booti ${kernel_addr_r} - ${fdt_addr_r}\0" \
 	"serverip=192.168.1.1\0" \
 	"spi_bootargs=setenv bootargs earlycon\0" \
