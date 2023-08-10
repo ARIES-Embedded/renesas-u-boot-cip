@@ -44,7 +44,7 @@
 	FIVEBERRY_EMMC_ENV_SETTINGS \
 	"eth1addr=32:eb:f5:29:04:30\0" \
 	"ethaddr=d6:8f:16:4f:c3:c7\0" \
-	"fdt_addr_r=0x60100000\0" \
+	"fdt_addr_r=0x58000000\0" \
 	"fdt_file=" FIVEBERRY_DEFAULT_DEVICE_TREE "\0" \
 	"fdt_size=20000\0" \
 	"fip_file=" FIVEBERRY_SECOND_LOADER "\0" \
@@ -61,7 +61,7 @@
 		"tftpboot ${fdt_addr_r} ${serverip}:${fdt_file} && " \
 		"run net_args && " \
 		"booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}\0" \
-	"ramdisk_addr_r=0x61000000\0" \
+	"ramdisk_addr_r=0x58020000\0" \
 	"ramdisk_file=" FIVEBERRY_DEFAULT_RAMDISK "\0" \
 	"ramdisk_size=8c0000\0" \
 	"sd_bootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk1p1\0" \

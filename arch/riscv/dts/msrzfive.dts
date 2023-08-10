@@ -30,7 +30,7 @@
 		u-boot,dm-spl;
 		device_type = "memory";
 		/* first 128MB is reserved for secure area. */
-		reg = <0 0x48000000 0 0x38000000>;
+		reg = <0 0x48000000 0 0x18000000>;
 	};
 
 	usb0_vbus0_otg: regulator-vbus0-usb2 {
