@@ -62,7 +62,7 @@
 #define FIVEBERRY_SECOND_LOADER "boot/fit-msrzg2ul.bin"
 #define FIVEBERRY_DEFAULT_IMAGE "boot/Image.gz-msrzg2ul.bin"
 #define FIVEBERRY_DEFAULT_DEVICE_TREE "boot/msrzg2ul.dtb"
-#define FIVEBERRY_DEFAULT_RAMDISK "boot/fiveberry-image-base-msrzg2ul.bin"
+#define FIVEBERRY_DEFAULT_RAMDISK "boot/fiveberry-image-minimal-initramfs-msrzg2ul.bin"
 #define FIVEBERRY_SECOND_LOADER_OFFSET	0x1d200
 
 /* ENV settings */
