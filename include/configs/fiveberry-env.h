@@ -69,6 +69,11 @@
 		"setenv kernel_comp_size ${filesize} && " \
 		"ext4load mmc " FIVEBERRY_SD_DEV " ${fdt_addr_r} ${fdt_file} && " \
 		"run sd_bootargs && booti ${kernel_addr_r} - ${fdt_addr_r}\0" \
+	"usb_bootargs=setenv bootargs rw rootwait earlycon root=/dev/sda1\0" \
+	"usb_boot=usb start; ext4load usb 0:1 ${kernel_addr_r} ${image_file} && " \
+		"setenv kernel_comp_size ${filesize} && " \
+		"ext4load usb 0:1 ${fdt_addr_r} ${fdt_file} && " \
+		"run usb_bootargs && booti ${kernel_addr_r} - ${fdt_addr_r}\0" \
 	"serverip=192.168.1.1\0" \
 	"spi_bootargs=setenv bootargs earlycon\0" \
 	"spi_boot=sf probe;sf read ${kernel_addr_r} 0x140000 ${kernel_comp_size};" \
@@ -80,6 +85,6 @@
 		"tftpboot ${serverip}:${fip_file} && sf write ${fileaddr} " \
 		__stringify(FIVEBERRY_SECOND_LOADER_OFFSET) " ${filesize}\0"
 
-#define CONFIG_BOOTCOMMAND	"run sd_boot || run spi_boot"
+#define CONFIG_BOOTCOMMAND	"run sd_boot || run usb_boot || run spi_boot"
 
 #endif /* __FIVEBERRY_ENV_H */
