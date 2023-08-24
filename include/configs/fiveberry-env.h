@@ -31,10 +31,10 @@
 		"tftpboot ${serverip}:${fipfile};" \
 		"run divup_filesize;mmc write ${fileaddr} 0x100 ${filesize}\0" \
 	"emmc_update=run emmc_bl2_update emmc_fip_update\0"
-#define FIVEBERRY_SD_DEV "mmc 1:1"
+#define FIVEBERRY_SD_DEV "1:1"
 #else
 #define FIVEBERRY_EMMC_ENV_SETTINGS
-#define FIVEBERRY_SD_DEV "mmc 0:1"
+#define FIVEBERRY_SD_DEV "0:1"
 #endif
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
@@ -65,7 +65,7 @@
 	"ramdisk_file=" FIVEBERRY_DEFAULT_RAMDISK "\0" \
 	"ramdisk_size=8c0000\0" \
 	"sd_bootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk1p1\0" \
-	"sd_boot=ext4load " FIVEBERRY_SD_DEV " ${kernel_addr_r} ${image_file} && " \
+	"sd_boot=ext4load mmc " FIVEBERRY_SD_DEV " ${kernel_addr_r} ${image_file} && " \
 		"setenv kernel_comp_size ${filesize} && " \
 		"ext4load mmc " FIVEBERRY_SD_DEV " ${fdt_addr_r} ${fdt_file} && " \
 		"run sd_bootargs && booti ${kernel_addr_r} - ${fdt_addr_r}\0" \
