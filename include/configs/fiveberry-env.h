@@ -87,6 +87,13 @@
 		"tftpboot ${serverip}:${bl2_file} && sf write ${fileaddr} 0 ${filesize};" \
 		"tftpboot ${serverip}:${fip_file} && sf write ${fileaddr} " \
 		__stringify(FIVEBERRY_SECOND_LOADER_OFFSET) " ${filesize}\0" \
+	"spi_update_all=run spi_update && " \
+		"sf protect unlock 0x120000 0x20000; sf erase 0x120000 +0x20000; " \
+		"tftpboot ${serverip}:${fdt_file} && sf write ${fileaddr} 0x120000 ${filesize};" \
+		"sf protect unlock 0x140000 0x600000; sf erase 0x140000 +0x600000; " \
+		"tftpboot ${serverip}:${image_file} && sf write ${fileaddr} 0x140000 ${filesize};" \
+		"sf protect unlock 0x740000 0x8c0000; sf erase 0x740000 +0x8c0000; " \
+		"tftpboot ${serverip}:${ramdisk_file} && sf write ${fileaddr} 0x740000 ${filesize}\0" \
 	"autoboot=run mmc_boot || run usb_boot || run spi_boot\0" \
 	"boot_mode=auto\0" \
 	"boot_select=" \
