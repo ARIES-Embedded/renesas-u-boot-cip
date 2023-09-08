@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Device Tree Source for the SMRZ2GUL OSM
+ * Device Tree Source for the MSRZ2GUL OSM
  *
  * Copyright (C) 2023 ARIES Embedded
  * Copyright (C) 2017 Jacopo Mondi <jacopo+renesas@jmondi.org>
