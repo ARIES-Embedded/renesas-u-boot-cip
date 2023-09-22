@@ -28,9 +28,8 @@
 	"emmc_update=mmc bootbus 0 2 0 0;mmc partconf 0 0 1 1;" \
 		"tftpboot ${serverip}:${bl2_file};" \
 		"run divup_filesize;mmc write ${fileaddr} 1 ${filesize};" \
-		"tftpboot ${serverip}:${fipfile};" \
-		"run divup_filesize;mmc write ${fileaddr} 0x100 ${filesize}\0" \
-	"emmc_update=run emmc_bl2_update emmc_fip_update\0"
+		"tftpboot ${serverip}:${fip_file};" \
+		"run divup_filesize;mmc write ${fileaddr} 0x100 ${filesize}\0"
 #define FIVEBERRY_MMC_DEV "1:1"
 #else
 #define FIVEBERRY_EMMC_ENV_SETTINGS
