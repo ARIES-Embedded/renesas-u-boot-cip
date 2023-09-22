@@ -169,18 +169,26 @@
 
 &ehci0 {
 	status = "okay";
-    pinctrl-0 = <&usb0_pins>;
-    pinctrl-names = "default";
-	/delete-property/ phys;
-	/delete-property/ phy-names;
+};
+
+&ohci0 {
+	status = "okay";
 };
 
 &ehci1 {
 	status = "okay";
-    pinctrl-0 = <&usb1_pins>;
-    pinctrl-names = "default";
-	/delete-property/ phys;
-	/delete-property/ phy-names;
+};
+
+&ohci1 {
+	status = "okay";
+};
+
+&usb2_phy0 {
+	status = "okay";
+};
+
+&usb2_phy1 {
+	status = "okay";
 };
 
 &wdt0 {

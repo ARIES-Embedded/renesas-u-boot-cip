@@ -91,6 +91,10 @@
 /* The HF/QSPI layout permits up to 1 MiB large bootloader blob */
 #define CONFIG_BOARD_SIZE_LIMIT		1048576
 
+/* USB OHCI configuration */
+#define CONFIG_USB_OHCI_NEW 1
+#define CONFIG_SYS_USB_OHCI_MAX_ROOT_PORTS 2
+
 #define FIVEBERRY_FIRST_LOADER "boot/spl-msrzfive.bin"
 #define FIVEBERRY_SECOND_LOADER "boot/fit-msrzfive.bin"
 #define FIVEBERRY_DEFAULT_IMAGE "boot/Image.gz-msrzfive.bin"
