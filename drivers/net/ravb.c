@@ -439,11 +439,12 @@ static int ravb_dmac_init(struct udevice *dev)
 	/* FIFO size set */
 	writel(0x00222210, eth->iobase + RAVB_REG_TGC);
 
+#if !(defined(CONFIG_RZ_V2M))	
 	/* Delay CLK: 2ns (not applicable on R-Car E3/D3) */
 	if ((rmobile_get_cpu_type() == RMOBILE_CPU_TYPE_R8A77990) ||
 	    (rmobile_get_cpu_type() == RMOBILE_CPU_TYPE_R8A77995))
 		return 0;
-
+#endif
 	if ((pdata->phy_interface == PHY_INTERFACE_MODE_RGMII_ID) ||
 	    (pdata->phy_interface == PHY_INTERFACE_MODE_RGMII_TXID))
 		writel(APSR_TDM, eth->iobase + RAVB_REG_APSR);
@@ -537,7 +538,9 @@ static int ravb_probe(struct udevice *dev)
 {
 	struct eth_pdata *pdata = dev_get_plat(dev);
 	struct ravb_priv *eth = dev_get_priv(dev);
+#if !(defined(CONFIG_RZ_V2M))
 	struct ofnode_phandle_args phandle_args;
+#endif
 	struct mii_dev *mdiodev;
 	void __iomem *iobase;
 	int ret;
@@ -549,6 +552,7 @@ static int ravb_probe(struct udevice *dev)
 	if (ret < 0)
 		goto err_mdio_alloc;
 
+#if !(defined(CONFIG_RZ_V2M))
 	ret = dev_read_phandle_with_args(dev, "phy-handle", NULL, 0, 0, &phandle_args);
 	if (!ret) {
 		gpio_request_by_name_nodev(phandle_args.node, "reset-gpios", 0,
@@ -559,6 +563,7 @@ static int ravb_probe(struct udevice *dev)
 		gpio_request_by_name(dev, "reset-gpios", 0, &eth->reset_gpio,
 				     GPIOD_IS_OUT);
 	}
+#endif
 
 	mdiodev = mdio_alloc();
 	if (!mdiodev) {
@@ -577,10 +582,12 @@ static int ravb_probe(struct udevice *dev)
 
 	eth->bus = miiphy_get_dev_by_name(dev->name);
 
+#if !(defined(CONFIG_RZ_V2M))
 	/* Bring up PHY */
 	ret = clk_enable(&eth->clk);
 	if (ret)
 		goto err_mdio_register;
+#endif
 
 	ret = ravb_reset(dev);
 	if (ret)
@@ -743,6 +750,7 @@ static const struct udevice_id ravb_ids[] = {
 	{ .compatible = "renesas,etheravb-r9a07g044c" },
 	{ .compatible = "renesas,etheravb-r9a07g054l" },
 	{ .compatible = "renesas,etheravb-r9a07g043u" },
+	{ .compatible = "renesas,etheravb-rzv2m" },
 	{ .compatible = "renesas,etheravb-r9a07g043f" },
 	{ }
 };
