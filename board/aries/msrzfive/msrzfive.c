@@ -14,6 +14,7 @@
 #include <hang.h>
 #include <wdt.h>
 #include <rzg2l_wdt.h>
+#include <renesas/rzf-dev/mmio.h>
 #include <renesas/rzf-dev/rzf-dev_def.h>
 #include <renesas/rzf-dev/rzf-dev_sys.h>
 #include <renesas/rzf-dev/rzf-dev_pfc_regs.h>
@@ -78,6 +79,11 @@ int board_early_init_f(void)
 
 	/* I2C pin non GPIO enable */
 	*(volatile u32 *)(PFC_IEN0E) = 0x01010101;
+
+	/* SD CLK */
+	*(volatile u32 *)(CPG_PL2SDHI_DSEL) = 0x00110011;
+	while (*(volatile u32 *)(CPG_CLKSTATUS) != 0)
+		;
 
 	*(volatile u32 *)(RPC_CMNCR) = 0x01FFF300;
 	return 0;
@@ -192,6 +198,9 @@ void spl_early_board_init_f(void)
 {
 	/* setup PFC */
 	pfc_setup();
+
+	/* set QSPI 1.8V voltage level */
+	mmio_write_32(PFC_QSPI, 1);
 
 	/* setup Clock and Reset */
 	cpg_setup();
