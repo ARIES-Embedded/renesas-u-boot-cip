@@ -860,6 +860,7 @@ static int sh_sdhi_dm_probe(struct udevice *dev)
 	fdt_addr_t base;
 	int ret;
 
+#if CONFIG_IS_ENABLED(GPIO)
 	gpio_request_by_name_nodev(dev_ofnode(dev), "pwr-gpios", 0,
 				   &host->pwr_gpio, GPIOD_IS_OUT);
 	if (dm_gpio_is_valid(&host->pwr_gpio))
@@ -870,6 +871,7 @@ static int sh_sdhi_dm_probe(struct udevice *dev)
 			return ret;
 		}
 	}
+#endif
 
 	base = dev_read_addr(dev);
 	if (base == FDT_ADDR_T_NONE)
@@ -879,6 +881,7 @@ static int sh_sdhi_dm_probe(struct udevice *dev)
 	if (!host->addr)
 		return -ENOMEM;
 
+#if CONFIG_IS_ENABLED(CLK)
 	ret = clk_get_by_index(dev, 0, &sh_sdhi_clk);
 	if (ret) {
 		debug("failed to get clock, ret=%d\n", ret);
@@ -890,6 +893,7 @@ static int sh_sdhi_dm_probe(struct udevice *dev)
 		debug("failed to enable clock, ret=%d\n", ret);
 		return ret;
 	}
+#endif
 
 	host->quirks = quirks;
 
