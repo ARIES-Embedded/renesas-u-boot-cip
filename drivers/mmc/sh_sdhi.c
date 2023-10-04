@@ -860,7 +860,7 @@ static int sh_sdhi_dm_probe(struct udevice *dev)
 	fdt_addr_t base;
 	int ret;
 
-#if CONFIG_IS_ENABLED(GPIO)
+#if CONFIG_IS_ENABLED(DM_GPIO)
 	gpio_request_by_name_nodev(dev_ofnode(dev), "pwr-gpios", 0,
 				   &host->pwr_gpio, GPIOD_IS_OUT);
 	if (dm_gpio_is_valid(&host->pwr_gpio))
