@@ -165,6 +165,26 @@ void reset_cpu(void)
 
 int board_late_init(void)
 {
+	struct udevice *dev;
+	u8 val;
+	int ret;
+
+	ret = i2c_get_chip_for_busnum(3, 0x68, 1, &dev);
+	if (ret) {
+		printf("Cannot find 5P35023: %d\n", ret);
+		return 0;
+	}
+
+	/* Enable clock to Ethernet PHYs */
+	val = 0x18;
+	dm_i2c_write(dev, 0x08, &val, 1);
+
+	val = 0xb3;
+	dm_i2c_write(dev, 0x0f, &val, 1);
+
+	val = 0x45;
+	dm_i2c_write(dev, 0x22, &val, 1);
+
 #ifdef CONFIG_RENESAS_RZG2LWDT
 	rzg2l_reinitr_wdt();
 #endif // CONFIG_RENESAS_RZG2LWDT
