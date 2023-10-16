@@ -58,8 +58,8 @@
 /* The HF/QSPI layout permits up to 1 MiB large bootloader blob */
 #define CONFIG_BOARD_SIZE_LIMIT		1048576
 
-#define FIVEBERRY_FIRST_LOADER "boot/spl-msrzg2ls.bin"
-#define FIVEBERRY_SECOND_LOADER "boot/fit-msrzg2ls.bin"
+#define FIVEBERRY_FIRST_LOADER "boot/bl2_bp-msrzg2ls.bin"
+#define FIVEBERRY_SECOND_LOADER "boot/fip-msrzg2ls.bin"
 #define FIVEBERRY_DEFAULT_IMAGE "boot/Image.gz-msrzg2ls.bin"
 #define FIVEBERRY_DEFAULT_DEVICE_TREE "boot/msrzg2ls.dtb"
 #define FIVEBERRY_DEFAULT_RAMDISK "boot/fiveberry-image-minimal-initramfs-msrzg2ls.bin"
