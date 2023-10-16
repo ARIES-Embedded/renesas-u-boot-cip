@@ -56,6 +56,13 @@
 				<RZG2L_PINMUX(28, 0, 1)>,
 				<RZG2L_PINMUX(28, 1, 1)>;
 	};
+	emmc_pins: emmc {
+		pinmux = <RZG2L_PINMUX(39, 0, 0)>;
+	};
+	mmc_pins: mmc {
+		pinmux = <RZG2L_PINMUX(39, 1, 0)>,
+			 <RZG2L_PINMUX(39, 2, 0)>;
+	};
 };
 
 &xinclk {
@@ -68,24 +75,18 @@
 };
 
 &sdhi0 {
-	/* pinctrl placeholder
-	 * If this channel is used for interfacing with a SD card, a power enable
-	 * pin (SD0_PWR_EN) must be defined.
-	 * The SD0_PWR_EN pin is associated with P4_1.
-	 * A HIGH signal on SD0_PWR_EN will enable supply voltage for SD card.
-	*/
+	pinctrl-names = "default";
+	pinctrl-0 = <&emmc_pins>;
 	bus-width = <8>;
 	status = "okay";
 };
 
 &sdhi1 {
-	/* pinctrl placeholder
-	 * A power enable pin (SD1_PWR_EN) must be defined to interface with a
-	 * SD card.
-	 * The SD1_PWR_EN pin is associated with P39_2.
-	 * A HIGH signal on SD1_PWR_EN will enable supply voltage for SD card.
-	*/
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc_pins>;
 	bus-width = <4>;
+	pwr-gpios = <&P39 1 GPIO_ACTIVE_HIGH>,
+		    <&P39 2 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };
 
