@@ -19,6 +19,7 @@
 
 	aliases {
 		serial0 = &scif0;
+		spi0 = &spibsc;
 	};
 
 	chosen {
@@ -28,7 +29,7 @@
 	memory@48000000 {
 		device_type = "memory";
 		/* first 128MB is reserved for secure area. */
-		reg = <0 0x48000000 0 0x78000000>;
+		reg = <0 0x48000000 0 0x38000000>;
 	};
 
 };
@@ -110,7 +111,26 @@
 	};
 };
 
+&spibsc {
+        status = "okay";
+        flash0: spi-flash@0 {
+                compatible = "spi-flash", "jedec,spi-nor";
+                spi-max-frequency = <50000000>;
+                spi-tx-bus-width = <1>;
+                spi-rx-bus-width = <1>;
+                reg = <0>;
+        };
+};
+
 &wdt0 {
 	status = "okay";
 	timeout-sec = <60>;
+};
+
+&ehci0 {
+	status = "okay";
+};
+
+&ehci1 {
+	status = "okay";
 };
