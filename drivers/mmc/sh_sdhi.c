@@ -45,7 +45,6 @@ struct sh_sdhi_host {
 	unsigned char sd_error;
 	unsigned char detect_waiting;
 	unsigned char app_cmd;
-	struct gpio_desc pwr_gpio;
 };
 
 static inline void sh_sdhi_writeq(struct sh_sdhi_host *host, int reg, u64 val)
@@ -858,17 +857,21 @@ static int sh_sdhi_dm_probe(struct udevice *dev)
 	struct clk sh_sdhi_clk;
 	const u32 quirks = dev_get_driver_data(dev);
 	fdt_addr_t base;
-	int ret;
+	int i, ret;
+	struct gpio_desc gpio[4];
 
 #if CONFIG_IS_ENABLED(DM_GPIO)
-	gpio_request_by_name_nodev(dev_ofnode(dev), "pwr-gpios", 0,
-				   &host->pwr_gpio, GPIOD_IS_OUT);
-	if (dm_gpio_is_valid(&host->pwr_gpio))
-	{
-		ret = dm_gpio_set_value(&host->pwr_gpio, 1);
-		if (ret) {
-			debug("error setting pwr gpio, ret=%d\n", ret);
-			return ret;
+	ret = gpio_request_list_by_name_nodev(dev_ofnode(dev), "pwr-gpios",
+			gpio, ARRAY_SIZE(gpio), GPIOD_IS_OUT);
+	for (i = 0; i < ret; i++) {
+		if (dm_gpio_is_valid(gpio + i))
+		{
+			int ret;
+			ret = dm_gpio_set_value(gpio + i, 1);
+			if (ret) {
+				debug("error setting pwr gpio, ret=%d\n", ret);
+				return ret;
+			}
 		}
 	}
 #endif
