@@ -1,5 +1,5 @@
 #
-# board/aries/msrzg2ls/Makefile
+# board/aries/mrzg2ls/Makefile
 #
 # Copyright (C) 2023 ARIES Embedded
 #
@@ -9,5 +9,5 @@
 ifdef CONFIG_SPL_BUILD
 obj-y	:= ../../renesas/rcar-common/gen3-spl.o
 else
-obj-y	:= msrzg2ls.o ../../renesas/rcar-common/common.o ../../renesas/rzf-dev/rzf-dev_spi.o
+obj-y	:= mrzg2ls.o ../../renesas/rcar-common/common.o ../../renesas/rzf-dev/rzf-dev_spi.o
 endif
