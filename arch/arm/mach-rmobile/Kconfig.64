@@ -227,10 +227,10 @@ config TARGET_MSRZG2UL
 	help
           Support for ARIES MSRZG2UL OSM
 
-config TARGET_MSRZG2LS
-	bool "ARIES MSRZG2LS SMARC"
+config TARGET_MRZG2LS
+	bool "ARIES MRZG2LS SMARC"
 	help
-          Support for ARIES MSRZG2LS SMARC
+          Support for ARIES MRZG2LS SMARC
 
 endchoice
 
@@ -252,7 +252,7 @@ source "board/renesas/rzv2l-dev/Kconfig"
 source "board/renesas/rzg2lc-dev/Kconfig"
 source "board/renesas/rzg2ul-dev/Kconfig"
 source "board/aries/msrzg2ul/Kconfig"
-source "board/aries/msrzg2ls/Kconfig"
+source "board/aries/mrzg2ls/Kconfig"
 
 config MULTI_DTB_FIT_UNCOMPRESS_SZ
 	default 0x80000 if TARGET_HIHOPE_RZG2

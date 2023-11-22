@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Device Tree Source for the ARIES MSRZG2LS SMARC
+ * Device Tree Source for the ARIES MRZG2LS SMARC
  *
  * Copyright (C) 2023 ARIES Embedded
  * Copyright (C) 2017 Jacopo Mondi <jacopo+renesas@jmondi.org>
@@ -14,7 +14,7 @@
 #include <dt-bindings/pinctrl/rzg2l-pinctrl.h>
 
 / {
-	model = "msrzg2ls";
+	model = "mrzg2ls";
 	compatible = "renesas,r9a07g044l", "renesas,rzg2l";
 
 	aliases {

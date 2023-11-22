@@ -4,8 +4,8 @@
  * Copyright (C) 2023 ARIES Embedded
  */
 
-#ifndef __MSRZG2LS_H
-#define __MSRZG2LS_H
+#ifndef __MRZG2LS_H
+#define __MRZG2LS_H
 
 #include <asm/arch/rmobile.h>
 
@@ -58,11 +58,11 @@
 /* The HF/QSPI layout permits up to 1 MiB large bootloader blob */
 #define CONFIG_BOARD_SIZE_LIMIT		1048576
 
-#define FIVEBERRY_FIRST_LOADER "boot/bl2_bp-msrzg2ls.bin"
-#define FIVEBERRY_SECOND_LOADER "boot/fip-msrzg2ls.bin"
-#define FIVEBERRY_DEFAULT_IMAGE "boot/Image.gz-msrzg2ls.bin"
-#define FIVEBERRY_DEFAULT_DEVICE_TREE "boot/msrzg2ls.dtb"
-#define FIVEBERRY_DEFAULT_RAMDISK "boot/fiveberry-image-minimal-initramfs-msrzg2ls.bin"
+#define FIVEBERRY_FIRST_LOADER "boot/bl2_bp-mrzg2ls.bin"
+#define FIVEBERRY_SECOND_LOADER "boot/fip-mrzg2ls.bin"
+#define FIVEBERRY_DEFAULT_IMAGE "boot/Image.gz-mrzg2ls.bin"
+#define FIVEBERRY_DEFAULT_DEVICE_TREE "boot/mrzg2ls.dtb"
+#define FIVEBERRY_DEFAULT_RAMDISK "boot/fiveberry-image-minimal-initramfs-mrzg2ls.bin"
 #define FIVEBERRY_SECOND_LOADER_OFFSET	0x1d200
 
 /* ENV settings */
