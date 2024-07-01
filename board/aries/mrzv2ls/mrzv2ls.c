@@ -151,7 +151,7 @@ int board_init(void)
 
 void reset_cpu(void)
 {
-#ifdef CONFIG_RENESAS_RZV2LWDT
+#ifdef CONFIG_RENESAS_RZG2LWDT
 	struct udevice *wdt_dev;
 	if (uclass_get_device(UCLASS_WDT, WDT_INDEX, &wdt_dev) < 0) {
 		printf("failed to get wdt device. cannot reset\n");
@@ -160,7 +160,7 @@ void reset_cpu(void)
 	if (wdt_expire_now(wdt_dev, 0) < 0) {
 		printf("failed to expire_now wdt\n");
 	}
-#endif // CONFIG_RENESAS_RZV2LWDT
+#endif // CONFIG_RENESAS_RZG2LWDT
 }
 
 int board_late_init(void)
