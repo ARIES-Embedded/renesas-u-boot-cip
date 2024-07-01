@@ -62,7 +62,7 @@
 #define FIVEBERRY_SECOND_LOADER "boot/fip-mrzv2ls.bin"
 #define FIVEBERRY_DEFAULT_IMAGE "boot/Image.gz-mrzv2ls.bin"
 #define FIVEBERRY_DEFAULT_DEVICE_TREE "boot/mrzv2ls.dtb"
-#define FIVEBERRY_DEFAULT_RAMDISK "boot/fiveberry-image-minimal-initramfs-mrzg2ls.bin"
+#define FIVEBERRY_DEFAULT_RAMDISK "boot/fiveberry-image-minimal-initramfs-mrzv2ls.bin"
 #define FIVEBERRY_SECOND_LOADER_OFFSET	0x1d200
 
 /* ENV settings */
@@ -72,4 +72,4 @@
 /* Ethernet RAVB */
 #define CONFIG_BITBANGMII_MULTI
 
-#endif /* __RZV2L_DEV_H */
+#endif /* __MRZV2LS_H */
