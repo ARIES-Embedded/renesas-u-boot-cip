@@ -1,0 +1,176 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Device Tree Source for the ARIES MRZV2LS SMARC
+ *
+ * Copyright (C) 2023 ARIES Embedded
+ * Copyright (C) 2017 Jacopo Mondi <jacopo+renesas@jmondi.org>
+ * Copyright (C) 2016 Renesas Electronics
+ */
+
+/dts-v1/;
+#include <dt-bindings/gpio/gpio.h>
+#include "r9a07g054l.dtsi"
+#include "r9a07g054l-u-boot.dtsi"
+#include <dt-bindings/pinctrl/rzg2l-pinctrl.h>
+
+/ {
+	model = "mrzv2ls";
+	compatible = "renesas,r9a07g054l", "renesas,rzv2l";
+
+	aliases {
+		serial0 = &scif0;
+		spi0 = &spibsc;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	memory@48000000 {
+		device_type = "memory";
+		/* first 128MB is reserved for secure area. */
+		reg = <0 0x48000000 0 0x38000000>;
+	};
+
+};
+
+&pinctrl {
+	eth0_pins: eth0 {
+		pinmux = <RZG2L_PINMUX(20, 0, 1)>,
+			 <RZG2L_PINMUX(20, 1, 1)>,
+			 <RZG2L_PINMUX(20, 2, 1)>,
+			 <RZG2L_PINMUX(21, 0, 1)>,
+			 <RZG2L_PINMUX(21, 1, 1)>,
+			 <RZG2L_PINMUX(22, 0, 1)>,
+			 <RZG2L_PINMUX(24, 0, 1)>,
+			 <RZG2L_PINMUX(24, 1, 1)>,
+			 <RZG2L_PINMUX(25, 0, 1)>,
+			 <RZG2L_PINMUX(25, 1, 1)>,
+			 <RZG2L_PINMUX(26, 0, 1)>,
+			 <RZG2L_PINMUX(26, 1, 1)>,
+			 <RZG2L_PINMUX(27, 1, 1)>,
+			 <RZG2L_PINMUX(28, 0, 1)>,
+			 <RZG2L_PINMUX(28, 1, 1)>,
+			 <RZG2L_PINMUX(47, 1, 0)>;
+	};
+	eth1_pins: eth1 {
+		pinmux = <RZG2L_PINMUX(29, 0, 1)>,
+			 <RZG2L_PINMUX(29, 1, 1)>,
+			 <RZG2L_PINMUX(30, 0, 1)>,
+			 <RZG2L_PINMUX(30, 1, 1)>,
+			 <RZG2L_PINMUX(31, 0, 1)>,
+			 <RZG2L_PINMUX(31, 1, 1)>,
+			 <RZG2L_PINMUX(33, 1, 1)>,
+			 <RZG2L_PINMUX(34, 0, 1)>,
+			 <RZG2L_PINMUX(34, 1, 1)>,
+			 <RZG2L_PINMUX(35, 0, 1)>,
+			 <RZG2L_PINMUX(35, 1, 1)>,
+			 <RZG2L_PINMUX(36, 0, 1)>,
+			 <RZG2L_PINMUX(37, 0, 1)>,
+			 <RZG2L_PINMUX(37, 1, 1)>,
+			 <RZG2L_PINMUX(37, 2, 1)>,
+			 <RZG2L_PINMUX(47, 3, 0)>;
+	};
+	emmc_pins: emmc {
+		pinmux = <RZG2L_PINMUX(39, 0, 0)>;
+	};
+	mmc_pins: mmc {
+		pinmux = <RZG2L_PINMUX(39, 1, 0)>,
+			 <RZG2L_PINMUX(39, 2, 0)>;
+	};
+	i2c3_pins: i2c3 {
+		pinmux = <RZG2L_PINMUX(18, 0, 3)>,
+			 <RZG2L_PINMUX(18, 1, 3)>;
+	};
+};
+
+&xinclk {
+        clock-frequency = <24000000>;
+};
+
+&scif0 {
+	status = "okay";
+	clock = <100000000>;
+};
+
+&sdhi0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&emmc_pins>;
+	bus-width = <8>;
+	status = "okay";
+};
+
+&sdhi1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc_pins>;
+	bus-width = <4>;
+	pwr-gpios = <&P39 1 GPIO_ACTIVE_HIGH>,
+		    <&P39 2 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+};
+
+&eth0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&eth0_pins>;
+	phy-handle = <&phy0>;
+	phy-mode = "rgmii";
+	status = "okay";
+
+	phy0: ethernet-phy@7 {
+		reset-gpios = <&P47 1 GPIO_ACTIVE_LOW>;
+		reg = <7>;
+	};
+};
+
+&eth1 {
+	pinctrl-names = "default";
+	pinctrl0 = <&eth1_pins>;
+	phy-handle = <&phy1>;
+	phy-mode = "rgmii";
+	status = "okay";
+
+	phy1: ethernet-phy@7 {
+		reset-gpios = <&P47 3 GPIO_ACTIVE_LOW>;
+		reg = <7>;
+	};
+};
+
+&i2c0 {
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&i2c1 {
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&i2c3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c3_pins>;
+	status = "okay";
+};
+
+&spibsc {
+        status = "okay";
+        flash0: spi-flash@0 {
+                compatible = "spi-flash", "jedec,spi-nor";
+                spi-max-frequency = <50000000>;
+                spi-tx-bus-width = <1>;
+                spi-rx-bus-width = <1>;
+                reg = <0>;
+        };
+};
+
+&wdt0 {
+	status = "okay";
+	timeout-sec = <60>;
+};
+
+&ehci0 {
+	status = "okay";
+};
+
+&ehci1 {
+	status = "okay";
+};

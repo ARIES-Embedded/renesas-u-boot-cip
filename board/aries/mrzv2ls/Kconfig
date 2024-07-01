@@ -1,0 +1,15 @@
+if TARGET_MRZV2LS
+
+config SYS_SOC
+	default "rmobile"
+
+config SYS_BOARD
+	default "mrzv2ls"
+
+config SYS_VENDOR
+	default "aries"
+
+config SYS_CONFIG_NAME
+	default "mrzv2ls"
+
+endif
