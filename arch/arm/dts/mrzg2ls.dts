@@ -113,27 +113,51 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&eth0_pins>;
 	phy-handle = <&phy0>;
-	phy-mode = "rgmii";
+	phy-mode = "rgmii-id";
 	status = "okay";
 
 	phy0: ethernet-phy@7 {
 		reset-gpios = <&P47 1 GPIO_ACTIVE_LOW>;
 		reg = <7>;
+		rxc-skew-ps = <2400>;
+		txc-skew-ps = <2400>;
+		rxdv-skew-ps = <0>;
+		txdv-skew-ps = <0>;
+		rxd0-skew-ps = <0>;
+		rxd1-skew-ps = <0>;
+		rxd2-skew-ps = <0>;
+		rxd3-skew-ps = <0>;
+		txd0-skew-ps = <0>;
+		txd1-skew-ps = <0>;
+		txd2-skew-ps = <0>;
+		txd3-skew-ps = <0>;
 	};
 };
 
-&eth1 {
-	pinctrl-names = "default";
-	pinctrl0 = <&eth1_pins>;
-	phy-handle = <&phy1>;
-	phy-mode = "rgmii";
-	status = "okay";
-
-	phy1: ethernet-phy@7 {
-		reset-gpios = <&P47 3 GPIO_ACTIVE_LOW>;
-		reg = <7>;
-	};
-};
+//&eth1 {
+//	pinctrl-names = "default";
+//	pinctrl0 = <&eth1_pins>;
+//	phy-handle = <&phy1>;
+//	phy-mode = "rgmii-id";
+//	status = "okay";
+//
+//	phy1: ethernet-phy@7 {
+//		reset-gpios = <&P47 3 GPIO_ACTIVE_LOW>;
+//		reg = <7>;
+//		rxc-skew-psec = <2400>;
+//		txc-skew-psec = <2400>;
+//		rxdv-skew-psec = <0>;
+//		txdv-skew-psec = <0>;
+//		rxd0-skew-psec = <0>;
+//		rxd1-skew-psec = <0>;
+//		rxd2-skew-psec = <0>;
+//		rxd3-skew-psec = <0>;
+//		txd0-skew-psec = <0>;
+//		txd1-skew-psec = <0>;
+//		txd2-skew-psec = <0>;
+//		txd3-skew-psec = <0>;
+//	};
+//};
 
 &i2c0 {
 	pinctrl-names = "default";
