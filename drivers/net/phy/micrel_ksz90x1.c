@@ -398,6 +398,64 @@ static struct phy_driver ksz9031_driver = {
 	.readext = &ksz9031_phy_extread,
 };
 
+#define KSZ9131_SKEW_5BIT_MAX	2400
+#define KSZ9131_SKEW_4BIT_MAX	800
+#define KSZ9131_OFFSET		700
+#define KSZ9131_STEP		100
+
+static int ksz9131_of_load_skew_values(struct phy_device *phydev,
+				       ofnode node,
+				       u16 reg, size_t field_sz,
+				       char *field[], u8 numfields)
+{
+	struct phy_driver *drv = phydev->drv;
+	int val[4] = {-(1 + KSZ9131_OFFSET), -(2 + KSZ9131_OFFSET),
+		      -(3 + KSZ9131_OFFSET), -(4 + KSZ9131_OFFSET)};
+	int skewval, skewmax = 0;
+	int matches = 0;
+	u16 maxval;
+	u16 newval;
+	u16 mask;
+	int i;
+
+	/* psec properties in dts should mean x pico seconds */
+	if (field_sz == 5)
+		skewmax = KSZ9131_SKEW_5BIT_MAX;
+	else
+		skewmax = KSZ9131_SKEW_4BIT_MAX;
+
+	for (i = 0; i < numfields; i++)
+		if (!ofnode_read_s32(node, field[i], &skewval)) {
+			if (skewval < -KSZ9131_OFFSET)
+				skewval = -KSZ9131_OFFSET;
+			else if (skewval > skewmax)
+				skewval = skewmax;
+
+			val[i] = skewval + KSZ9131_OFFSET;
+			matches++;
+		}
+
+	if (!matches)
+		return 0;
+
+	if (matches < numfields)
+		newval = phy_read_mmd(phydev, 2, reg);
+	else
+		newval = 0;
+
+	maxval = (field_sz == 4) ? 0xf : 0x1f;
+	for (i = 0; i < numfields; i++)
+		if (val[i] != -(i + 1 + KSZ9131_OFFSET)) {
+			mask = 0xffff;
+			mask ^= maxval << (field_sz * i);
+			newval = (newval & mask) |
+				(((val[i] / KSZ9131_STEP) & maxval)
+					<< (field_sz * i));
+		}
+
+	return drv->writeext(phydev, 0, 2, reg, newval);
+}
+
 #define KSZ9131RN_MMD_COMMON_CTRL_REG   2
 #define MII_KSZ9031RN_CONTROL_PAD_SKEW  4
 #define MII_KSZ9031RN_RX_DATA_PAD_SKEW  5
@@ -406,16 +464,60 @@ static struct phy_driver ksz9031_driver = {
 
 static int ksz9131_clock_skew(struct phy_device *phydev)
 {
+	struct udevice *dev = phydev->dev;
+	struct phy_driver *drv = phydev->drv;
+	ofnode node;
+	char *clk_skews[2] = {"rxc-skew-psec", "txc-skew-psec"};
+	char *rx_data_skews[4] = {
+		"rxd0-skew-psec", "rxd1-skew-psec",
+		"rxd2-skew-psec", "rxd3-skew-psec"
+	};
+	char *tx_data_skews[4] = {
+		"txd0-skew-psec", "txd1-skew-psec",
+		"txd2-skew-psec", "txd3-skew-psec"
+	};
+	char *control_skews[2] = {"txen-skew-psec", "rxdv-skew-psec"};
+	int ret;
 	int val;
 
-	val = phy_read_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG, MII_KSZ9031RN_CLK_PAD_SKEW);
+	if (!drv || !drv->writeext)
+		return -EOPNOTSUPP;
 
-	if (val < 0)
-		return val;
+	node = phydev->node;
 
-	val |= 0xffff;
+	if (!ofnode_valid(node)) {
+		/* Look for a PHY node under the Ethernet node */
+		node = dev_read_subnode(dev, "ethernet-phy");
+	}
 
-	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG, MII_KSZ9031RN_CLK_PAD_SKEW, val);
+	if (!ofnode_valid(node)) {
+		/* No node found, look in the Ethernet node */
+		node = dev_ofnode(dev);
+	}
+
+	ret = ksz9131_of_load_skew_values(phydev, node,
+					  MII_KSZ9031RN_CLK_PAD_SKEW, 5,
+					  clk_skews, 2);
+	if (ret < 0)
+		return ret;
+
+	ret = ksz9131_of_load_skew_values(phydev, node,
+					  MII_KSZ9031RN_CONTROL_PAD_SKEW, 4,
+					  control_skews, 2);
+	if (ret < 0)
+		return ret;
+
+	ret = ksz9131_of_load_skew_values(phydev, node,
+					  MII_KSZ9031RN_RX_DATA_PAD_SKEW, 4,
+					  rx_data_skews, 4);
+	if (ret < 0)
+		return ret;
+
+	ret = ksz9131_of_load_skew_values(phydev, node,
+					  MII_KSZ9031RN_TX_DATA_PAD_SKEW, 4,
+					  tx_data_skews, 4);
+	if (ret < 0)
+		return ret;
 
 	return 0;
 }
