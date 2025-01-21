@@ -1,30 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Device Tree Source for the MSRZ2GUL OSM
+ * Device Tree Source for the MSRZ2GUL-BAA OSM
  *
- * Copyright (C) 2023 ARIES Embedded
- * Copyright (C) 2017 Jacopo Mondi <jacopo+renesas@jmondi.org>
- * Copyright (C) 2016 Renesas Electronics
+ * Copyright (C) 2025 ARIES Embedded
  */
 
 /dts-v1/;
-#include <dt-bindings/gpio/gpio.h>
 #include "r9a07g043u11.dtsi"
 #include "r9a07g043u11-u-boot.dtsi"
-#include <dt-bindings/pinctrl/rzg2l-pinctrl.h>
+#include "msrzg2ul.dtsi"
 
 / {
-	model = "msrzg2ul";
-	compatible = "renesas,r9a07g043u", "renesas,rzg2ul";
-
-	aliases {
-		serial0 = &scif0;
-		spi0 = &spibsc;
-	};
-
-	chosen {
-		stdout-path = "serial0:115200n8";
-	};
+	model = "msrzg2ul-baa";
+	compatible = "renesas,r9a07g043u", "renesas,rzg2ul", "renesas,rzg2ul-baa";
 
 	memory@48000000 {
 		device_type = "memory";
@@ -34,154 +22,9 @@
 
 };
 
-&pinctrl {
-	eth0_pins: eth0 {
-		pinmux = <RZG2L_PINMUX(1, 0, 1)>,
-			<RZG2L_PINMUX(1, 1, 1)>,
-			<RZG2L_PINMUX(1, 2, 1)>,
-			<RZG2L_PINMUX(1, 3, 1)>,
-			<RZG2L_PINMUX(1, 4, 1)>,
-			<RZG2L_PINMUX(2, 0, 1)>,
-			<RZG2L_PINMUX(2, 1, 1)>,
-			<RZG2L_PINMUX(2, 2, 1)>,
-			<RZG2L_PINMUX(2, 3, 1)>,
-			<RZG2L_PINMUX(3, 0, 1)>,
-			<RZG2L_PINMUX(3, 1, 1)>,
-			<RZG2L_PINMUX(3, 2, 1)>,
-			<RZG2L_PINMUX(3, 3, 1)>,
-			<RZG2L_PINMUX(4, 0, 1)>,
-			<RZG2L_PINMUX(4, 1, 1)>,
-			<RZG2L_PINMUX(4, 2, 1)>,
-			<RZG2L_PINMUX(4, 3, 1)>,
-			<RZG2L_PINMUX(4, 4, 1)>,
-			<RZG2L_PINMUX(4, 5, 1)>;
-	};
-	eth1_pins: eth1 {
-		pinmux = <RZG2L_PINMUX(7, 0, 1)>,
-			<RZG2L_PINMUX(7, 1, 1)>,
-			<RZG2L_PINMUX(7, 2, 1)>,
-			<RZG2L_PINMUX(7, 3, 1)>,
-			<RZG2L_PINMUX(7, 4, 1)>,
-			<RZG2L_PINMUX(8, 0, 1)>,
-			<RZG2L_PINMUX(8, 1, 1)>,
-			<RZG2L_PINMUX(8, 2, 1)>,
-			<RZG2L_PINMUX(8, 3, 1)>,
-			<RZG2L_PINMUX(8, 4, 1)>,
-			<RZG2L_PINMUX(9, 0, 1)>,
-			<RZG2L_PINMUX(9, 1, 1)>,
-			<RZG2L_PINMUX(9, 2, 1)>,
-			<RZG2L_PINMUX(9, 3, 1)>,
-			<RZG2L_PINMUX(10, 0, 1)>,
-			<RZG2L_PINMUX(10, 1, 1)>,
-			<RZG2L_PINMUX(10, 2, 1)>,
-			<RZG2L_PINMUX(10, 3, 1)>,
-			<RZG2L_PINMUX(10, 4, 1)>;
-	};
-	mmc_pins: mmc0 {
-		pinmux = <RZG2L_PINMUX(11, 2, 0)>;
-	};
-};
-
-&xinclk {
-        clock-frequency = <24000000>;
-};
-
-&scif0 {
-	status = "okay";
-	clock = <100000000>;
-};
-
 &sdhi0 {
 	bus-width = <8>;
 	status = "okay";
 	/* This is used for interface that support both eMMC and SD in board */
 	mutual-channel;
-};
-
-&sdhi1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc_pins>;
-	bus-width = <4>;
-	status = "okay";
-	pwr-gpios = <&P11 2 GPIO_ACTIVE_HIGH>;
-};
-
-&eth0 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&eth0_pins>;
-	phy-handle = <&phy0>;
-	phy-mode = "rgmii-id";
-	status = "okay";
-
-	phy0: ethernet-phy@7 {
-		reg = <7>;
-		rxc-skew-ps = <2400>;
-		txc-skew-ps = <2400>;
-		rxdv-skew-ps = <0>;
-		txdv-skew-ps = <0>;
-		rxd0-skew-ps = <0>;
-		rxd1-skew-ps = <0>;
-		rxd2-skew-ps = <0>;
-		rxd3-skew-ps = <0>;
-		txd0-skew-ps = <0>;
-		txd1-skew-ps = <0>;
-		txd2-skew-ps = <0>;
-		txd3-skew-ps = <0>;
-	};
-};
-
-//&eth1 {
-//	pinctrl-names = "default";
-//	pinctrl-0 = <&eth1_pins>;
-//	phy-handle = <&phy1>;
-//	phy-mode = "rgmii-id";
-//	status = "okay";
-//
-//	phy1: ethernet-phy@7 {
-//		reg = <7>;
-//		rxc-skew-ps = <2400>;
-//		txc-skew-ps = <2400>;
-//		rxdv-skew-ps = <0>;
-//		txdv-skew-ps = <0>;
-//		rxd0-skew-ps = <0>;
-//		rxd1-skew-ps = <0>;
-//		rxd2-skew-ps = <0>;
-//		rxd3-skew-ps = <0>;
-//		txd0-skew-ps = <0>;
-//		txd1-skew-ps = <0>;
-//		txd2-skew-ps = <0>;
-//		txd3-skew-ps = <0>;
-//	};
-//};
-
-&i2c0 {
-	status = "okay";
-};
-
-&i2c1 {
-	status = "okay";
-};
-
-&spibsc {
-        status = "okay";
-        flash0: spi-flash@0 {
-                compatible = "spi-flash", "jedec,spi-nor";
-                spi-max-frequency = <40000000>;
-                spi-tx-bus-width = <2>;
-                spi-rx-bus-width = <2>;
-                reg = <0>;
-        };
-};
-
-&ehci0 {
-	status = "okay";
-};
-
-&ehci1 {
-	status = "okay";
-};
-
-&wdt0 {
-	status = "okay";
-	timeout-sec = <60>;
 };
