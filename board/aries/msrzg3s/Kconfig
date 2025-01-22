@@ -1,0 +1,15 @@
+if TARGET_MSRZG3S
+
+config SYS_SOC
+	default "rmobile"
+
+config SYS_BOARD
+	default "msrzg3s"
+
+config SYS_VENDOR
+	default "aries"
+
+config SYS_CONFIG_NAME
+	default "msrzg3s"
+
+endif
