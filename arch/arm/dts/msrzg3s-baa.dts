@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Device Tree Source for the MSRZ2GUL-BAA OSM on OSMEVK or G3Sberry
+ *
+ * Copyright (C) 2025 ARIES Embedded
+ */
+
+/dts-v1/;
+#include <dt-bindings/gpio/gpio.h>
+#include "r9a08g045s.dtsi"
+#include "r9a08g045s-u-boot.dtsi"
+#include "msrzg3s.dtsi"
+
+/ {
+	model = "msrzg3s-baa";
+	compatible = "renesas,r9a08g045s", "aries,msrzg3s", "aries,msrzg3s-baa";
+
+	memory@48000000 {
+		device_type = "memory";
+		/* first 128MB is reserved for secure area. */
+		reg = <0 0x48000000 0 0x38000000>;
+	};
+};
+
+&sdhi0 {
+	bus-width = <8>;
+	non-removable;
+	status = "okay";
+};
