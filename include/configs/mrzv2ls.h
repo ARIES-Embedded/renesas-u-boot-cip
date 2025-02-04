@@ -58,15 +58,15 @@
 /* The HF/QSPI layout permits up to 1 MiB large bootloader blob */
 #define CONFIG_BOARD_SIZE_LIMIT		1048576
 
-#define FIVEBERRY_FIRST_LOADER "boot/bl2_bp-mrzv2ls.bin"
-#define FIVEBERRY_SECOND_LOADER "boot/fip-mrzv2ls.bin"
-#define FIVEBERRY_DEFAULT_IMAGE "boot/Image.gz-mrzv2ls.bin"
-#define FIVEBERRY_DEFAULT_DEVICE_TREE "boot/mrzv2ls.dtb"
-#define FIVEBERRY_DEFAULT_RAMDISK "boot/fiveberry-image-minimal-initramfs-mrzv2ls.bin"
-#define FIVEBERRY_SECOND_LOADER_OFFSET	0x1d200
+#define MSRZ_FIRST_LOADER "boot/bl2_bp-mrzv2ls.bin"
+#define MSRZ_SECOND_LOADER "boot/fip-mrzv2ls.bin"
+#define MSRZ_DEFAULT_IMAGE "boot/Image.gz-mrzv2ls.bin"
+#define MSRZ_DEFAULT_DEVICE_TREE "boot/mrzv2ls.dtb"
+#define MSRZ_DEFAULT_RAMDISK "boot/msrz-image-minimal-initramfs-mrzv2ls.bin"
+#define MSRZ_SECOND_LOADER_OFFSET	0x1d200
 
 /* ENV settings */
-#include "fiveberry-env.h"
+#include "msrz-env.h"
 
 /* For board */
 /* Ethernet RAVB */
