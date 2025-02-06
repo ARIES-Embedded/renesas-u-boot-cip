@@ -43,10 +43,8 @@
 #define CONFIG_SH_SDHI_FREQ		133000000
 
 #ifdef CONFIG_SUPPORT_EMMC_BOOT
-#define MSRZ_MODULE			"msrzg2ul-baa"
 #define DRAM_SIZE			0x40000000u /* 1 GB */
 #else
-#define MSRZ_OPTION			"msrzg2ul-a0a"
 #define DRAM_SIZE			0x20000000u /* 512 MB */
 #endif
 #define DRAM_RSV_SIZE			0x08000000
@@ -65,11 +63,18 @@
 /* The HF/QSPI layout permits up to 1 MiB large bootloader blob */
 #define CONFIG_BOARD_SIZE_LIMIT		1048576
 
-#define MSRZ_FIRST_LOADER "boot/spl-" MSRZ_MODULE ".bin"
-#define MSRZ_SECOND_LOADER "boot/fit-" MSRZ_MODULE ".bin"
+#ifdef CONFIG_SUPPORT_EMMC_BOOT
+#define MSRZ_FIRST_LOADER "boot/spl-msrzg2ul-baa.bin"
+#define MSRZ_SECOND_LOADER "boot/fit-msrzg2ul-baa.bin"
+#define MSRZ_DEFAULT_DEVICE_TREE "boot/msrzg2ul-baa.dtb"
+#define MSRZ_DEFAULT_RAMDISK "boot/msrz-image-minimal-initramfs-msrzg2ul-baa.bin"
+#else
+#define MSRZ_FIRST_LOADER "boot/spl-msrzg2ul-a0a.bin"
+#define MSRZ_SECOND_LOADER "boot/fit-msrzg2ul-a0a.bin"
+#define MSRZ_DEFAULT_DEVICE_TREE "boot/msrzg2ul-a0a.dtb"
+#define MSRZ_DEFAULT_RAMDISK "boot/msrz-image-minimal-initramfs-msrzg2ul-a0a.bin"
+#endif
 #define MSRZ_DEFAULT_IMAGE "boot/Image.gz"
-#define MSRZ_DEFAULT_DEVICE_TREE "boot/" MSRZ_MODULE ".dtb"
-#define MSRZ_DEFAULT_RAMDISK "boot/msrz-image-minimal-initramfs-" MSRZ_MODULE ".bin"
 
 #define MSRZ_SECOND_LOADER_OFFSET	0x1d200
 
