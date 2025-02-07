@@ -31,11 +31,9 @@
 		"tftpboot ${serverip}:${fip_file};" \
 		"run divup_filesize;mmc write ${fileaddr} 0x100 ${filesize}\0"
 #define MSRZ_MMC_DEV "1:1"
-#define MSRZ_MMC_ROOTFS "/dev/mmcblk1p1"
 #else
 #define MSRZ_EMMC_ENV_SETTINGS
 #define MSRZ_MMC_DEV "0:1"
-#define MSRZ_MMC_ROOTFS "/dev/mmcblk0p1"
 #endif
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
@@ -65,7 +63,7 @@
 	"ramdisk_addr_r=0x58020000\0" \
 	"ramdisk_file=" MSRZ_DEFAULT_RAMDISK "\0" \
 	"ramdisk_size=8c0000\0" \
-	"mmc_bootargs=setenv bootargs rw rootwait earlycon root=" MSRZ_MMC_ROOTFS "\0" \
+	"mmc_bootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk1p1\0" \
 	"mmc_boot=echo Booting from MMC...;" \
 		"ext4load mmc " MSRZ_MMC_DEV " ${kernel_addr_r} ${image_file} && " \
 		"setenv kernel_comp_size ${filesize} && " \
