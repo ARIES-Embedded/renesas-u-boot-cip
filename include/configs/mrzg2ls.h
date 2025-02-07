@@ -60,7 +60,7 @@
 
 #define MSRZ_FIRST_LOADER "boot/bl2_bp-mrzg2ls.bin"
 #define MSRZ_SECOND_LOADER "boot/fip-mrzg2ls.bin"
-#define MSRZ_DEFAULT_IMAGE "boot/Image.gz-mrzg2ls.bin"
+#define MSRZ_DEFAULT_IMAGE "boot/Image.gz"
 #define MSRZ_DEFAULT_DEVICE_TREE "boot/mrzg2ls.dtb"
 #define MSRZ_DEFAULT_RAMDISK "boot/msrz-image-minimal-initramfs-mrzg2ls.bin"
 #define MSRZ_SECOND_LOADER_OFFSET	0x1d200
