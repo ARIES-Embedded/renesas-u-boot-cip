@@ -77,12 +77,12 @@
 	"usb_pgood_delay=2000\0" \
 	"bootm_size=0x10000000\0" \
 	"mmc_dev=" MSRZ_MMC_DEV "\0" \
-	"mmc_part=1"\0" \
+	"mmc_part=1\0" \
 	"mmcbootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk${mmc_dev}p${mmc_part}\0" \
 	"bootimage=booti 0x48080000 - 0x48000000\0" \
 	"image_file=boot/Image\0" \
 	"fdt_file=boot/" MSRZ_FDT_FILE "\0" \
-	"mmcload=ext4load mmc ${mmc_dev}:${mmc_part} 0x48080000 ${image_file};ext4load mmc ${mmc_dev}:${mmc_part} 0x48000000 ${fdt_file}\0" \
+	"mmcload=ext4load mmc ${mmc_dev}:${mmc_part} 0x48080000 ${image_file};ext4load mmc ${mmc_dev}:${mmc_part} 0x48000000 ${fdt_file}\0"
 
 #define CONFIG_BOOTCOMMAND	"run mmcload mmcbootargs bootimage"
 
