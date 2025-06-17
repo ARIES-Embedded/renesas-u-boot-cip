@@ -59,6 +59,10 @@ DECLARE_GLOBAL_DATA_PTR;
 #define CPG_CLKMON_USB			(CPG_BASE + 0x6F8)
 
 /* PFC */
+#define	PFC_P20				(PFC_BASE + 0x20)
+#define	PFC_PM20			(PFC_BASE + 0x0140)
+#define	PFC_PMC20			(PFC_BASE + 0x0220)
+
 #define	PFC_P25				(PFC_BASE + 0x25)
 #define	PFC_PM25			(PFC_BASE + 0x014A)
 #define	PFC_PMC25			(PFC_BASE + 0x0225)
@@ -101,25 +105,16 @@ void s_init(void)
 	*(volatile u32 *)(PFC_PWPR) = 0;
 	*(volatile u32 *)(PFC_PWPR) = PWPR_PFCWE;
 
-	/* SD power enable: SD0_PWR_EN - P2_1 = 1, SDIO_PWR_EN - P2_3 = 1, SDIO_PWR_SEL - P4_2 = 1, SD2_PWR_EN - P8_1 = 1 */
-	/* Set P2_1(bit1), P2_2(bit2) and P2_3(bit3) to GPIO Mode */
-	*(volatile u8 *)(PFC_PMC31) &= 0xF1;
-	*(volatile u8 *)(PFC_PMC33) &= 0xFB; /* Set P4_2(bit2) to GPIO Mode */
-	*(volatile u8 *)(PFC_PMC35) &= 0xFD; /* Set P8_1(bit1) to GPIO Mode */
-	/* Set P2_1(bit[3:2]), P2_2(bit[5:4]) and P2_3(bit[7:6]) to Output mode */
-	*(volatile u16 *)(PFC_PM31) = (*(volatile u16 *)(PFC_PM31) & 0xFF03) | 0x00A8;
-	/* Set P4_2(bit[5:4]) to Output mode */
-	*(volatile u16 *)(PFC_PM33) = (*(volatile u16 *)(PFC_PM33) & 0xFFCF) | 0x0020;
-	/* Set P8_1(bit[3:2]) to Output mode */
-	*(volatile u16 *)(PFC_PM35) = (*(volatile u16 *)(PFC_PM35) & 0xFFF3) | 0x0008;
-	/* Set P2_1(bit1), P2_2(bit2) and P2_3(bit3) to High output */
-	*(volatile u8 *)(PFC_P31) |= 0x0E;
-	*(volatile u8 *)(PFC_P33) |= 0x04; /* Set P4_2(bit2) to High output */
-	*(volatile u8 *)(PFC_P35) |= 0x02; /* Set P8_1(bit1) to High output */
-
 	/* Input Enable Control */
 	*(volatile u32 *)(PFC_IEN_23) = 0x01010100;	/* SD2_DATA1, SD2_DATA0, SD2_CMD	*/
 	*(volatile u32 *)(PFC_IEN_24) = 0x0101;		/* SD2_DATA3, SD2_DATA2			*/
+
+	/* SD power enable: SDIO_PWREN - P0_1 to GPIO mode */
+	*(volatile u8 *)(PFC_PMC20) &= 0x2;
+	/* Set P0_1(bit[3:2]) to Output mode */
+	*(volatile u16 *)(PFC_PM20) = (*(volatile u16 *)(PFC_PM20) & 0xFFF3) | 0x0008;
+	/* Set P201(bit1) to High output */
+	*(volatile u8 *)(PFC_P20) |= 0x02; /* Set P0_1(bit1) to High output */
 
 	/* Can go in board_eth_init() once enabled */
 	*(volatile u32 *)(ETH0_POC) = (*(volatile u32 *)(ETH0_POC) & 0xFFFFFFFC) | ETH_PVDD_1800;
@@ -146,8 +141,8 @@ void s_init(void)
 	 * Currently, we use IMCLKs with output CLK rate 133 MHz
 	 * HSCLK will be considered to support later.
 	 */
-	*(volatile u32 *)(CPG_SDHI_DDIV) = 0x01110000;
-	*(volatile u32 *)(CPG_SDHI_DSEL) = 0x01110222;
+	*(volatile u32 *)(CPG_SDHI_DDIV) = 0x00110000;
+	*(volatile u32 *)(CPG_SDHI_DSEL) = 0x00110022;
 	while ((*(volatile u32 *)(CPG_CLKDIV_STATUS) != 0) ||
 	       (*(volatile u32 *)(CPG_CLKSEL_STATUS) != 0))
 		;
