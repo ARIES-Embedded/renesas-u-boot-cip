@@ -67,8 +67,10 @@
 
 #ifdef CONFIG_SUPPORT_EMMC_BOOT
 #define MSRZ_SD_DEV "1:1"
+#define MSRZ_FDT_FILE "msrzg3s-baa.dtb"
 #else
 #define MSRZ_SD_DEV "0:1"
+#define MSRZ_FDT_FILE "msrzg3s-a0a.dtb"
 #endif
 
 #define CONFIG_EXTRA_ENV_SETTINGS		\
@@ -77,7 +79,7 @@
 	"sdbootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk1p1\0" \
 	"bootimage=booti 0x48080000 - 0x48000000\0" \
 	"image_file=boot/Image\0" \
-	"fdt_file=boot/msrzg3s-a0a.dtb\0" \
+	"fdt_file=boot/" MSRZ_FDT_FILE "\0" \
 	"sdload=ext4load mmc " MSRZ_SD_DEV " 0x48080000 ${image_file};ext4load mmc " MSRZ_SD_DEV " 0x48000000 ${fdt_file};run sdbootargs\0" \
 
 #define CONFIG_BOOTCOMMAND	"run sdload bootimage"
