@@ -78,7 +78,8 @@
 	"bootm_size=0x10000000\0" \
 	"mmc_dev=" MSRZ_MMC_DEV "\0" \
 	"mmc_part=1\0" \
-	"mmcbootargs=setenv bootargs rw rootwait earlycon root=/dev/mmcblk${mmc_dev}p${mmc_part}\0" \
+	"mmc_root=/dev/mmcblk1p1\0" \
+	"mmcbootargs=setenv bootargs rw rootwait earlycon root=${mmc_root}\0" \
 	"bootimage=booti 0x48080000 - 0x48000000\0" \
 	"image_file=boot/Image\0" \
 	"fdt_file=boot/" MSRZ_FDT_FILE "\0" \
