@@ -24,7 +24,6 @@
 #include <asm/arch/rcar-mstp.h>
 #include <asm/arch/sh_sdhi.h>
 #include <mmc.h>
-#include <i2c.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -156,55 +155,6 @@ void s_init(void)
 		;
 }
 
-static void board_pmic_init(void)
-{
-	struct udevice *dev;
-	struct udevice *bus;
-	const u8 pmic_bus = 1;
-	const u8 pmic_addr = 0x5a;
-	u8 data[3];
-	int ret;
-
-	/* Switch the PMIC to PWM (Puls Width Modulation) mode if not
-	 * already done. The default PFM (Puls Frequency Modulation)
-	 * mode may cause system hangs and crashes, most probably
-	 * because the Voltage for the LPDDR4 is not stable.
-	 */
-	ret = uclass_get_device_by_seq(UCLASS_I2C, pmic_bus, &bus);
-	if (ret) {
-		printf("couldn't get PMIC I2C bus: err=%d\n", ret);
-		return;
-	}
-
-	ret = i2c_get_chip(bus, pmic_addr, 1, &dev);
-	if (ret) {
-		printf("couldn't get PMIC device: err=%d\n", ret);
-		return;
-	}
-
-	ret = dm_i2c_read(dev, 0x9d, &data[0], 1);
-	if (ret) {
-		printf("couldn't read PMIC reg 0x9d: err=%d\n", ret);
-		return;
-	}
-	if (data[0] != 0x81) {
-		puts("PMIC:  switch to PWM mode\n");
-		memset(data, 0x81, sizeof(data));
-		ret = dm_i2c_write(dev, 0x9d, &data, sizeof(data));
-		if (ret) {
-			printf("couldn't write PMIC reg 0x9d: err=%d\n",
-			       ret);
-			return;
-		}
-		ret = dm_i2c_write(dev, 0xa0, &data, sizeof(data));
-		if (ret) {
-			printf("couldn't write PMIC reg 0xa0: err=%d\n",
-			       ret);
-			return;
-		}
-	}
-}
-
 static void board_usb_init(void)
 {
 	/*Enable USB*/
@@ -239,7 +189,6 @@ int board_init(void)
 {
 	/* Address of boot parameters */
 	gd->bd->bi_boot_params = CONFIG_SYS_TEXT_BASE + 0x50000;
-	board_pmic_init();
 	board_usb_init();
 
 	return 0;
